@@ -588,4 +588,4 @@ var loadreport = {
 
 };
 
-loadreport.run();
+exports.loadreport = loadreport;
