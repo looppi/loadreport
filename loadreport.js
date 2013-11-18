@@ -218,6 +218,9 @@ var loadreport = {
                 this.printToFile(config,report,'loadreport','xml',phantom.args.indexOf('wipe') >= 0);
             }
 
+        },
+        end_task: function() {
+            phantom.exit();
         }
 
 
@@ -304,14 +307,14 @@ var loadreport = {
                 } else {
                     task.onLoadFinished.call(scope, page, config, status);
                 }
-                phantom.exit();
+                task.end_task();
 
                 page = WebPage.create();
                 doPageLoad();
             };
         } else {
             page.onLoadFinished = function (status) {
-                phantom.exit();
+                task.end_task();
             };
         }
         page.settings.localToRemoteUrlAccessEnabled = true;
