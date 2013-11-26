@@ -11,9 +11,13 @@ var tester = {
     sequence_number: 0,
     test_plan: [
         "http://kalastus.hongkong.fi",
-        "http://kalastus.hongkong.fi/fi/vieheet/jerkit/c/30504/",
-        "http://kalastus.hongkong.fi/fi/vieheet/jerkit/svartzonker-mcmy-tail-jerkki/p/436004/",
-        "http://kalastus.hongkong.fi"
+//        "http://kalastus.hongkong.fi/fi/vieheet/jerkit/c/30504/",
+//       "http://kalastus.hongkong.fi/fi/vieheet/jerkit/svartzonker-mcmy-tail-jerkki/p/436004/",
+        "http://prisma.s-verkkokauppa.fi/fi/prisma",
+//        "http://prisma.s-verkkokauppa.fi/fi/prisma/haku/nokia%20lumia",
+//        "http://verkkokauppa.starkki.fi/fi/",
+//        "http://www.verkkokauppa.com/",
+//        "http://www.verkkokauppa.com/fi/search?q=galaxy%20s4"
     ],
 
     config: {
@@ -32,6 +36,7 @@ var tester = {
             var task = loadreport[this.task];
             task.start = null;
             task.end_task = this.end_task;
+            task.url = url;
             loadreport.load(this.config, task, loadreport);
             this.sequence_number++;
         } else {
@@ -42,6 +47,6 @@ var tester = {
     end_task: function() {
         tester.run();
     }
-}
+};
 
 tester.run();

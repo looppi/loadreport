@@ -177,7 +177,7 @@ var loadreport = {
             }
 
             var report = {};
-            report.url = phantom.args[0];
+            report.url = this.performance.url;
             report.phantomCacheEnabled = phantom.args.indexOf('yes') >= 0 ? 'yes' : 'no';
             report.taskName = config.task;
             var drsi = parseInt(this.performance.evalConsole.interactive);
@@ -203,7 +203,7 @@ var loadreport = {
             report.errors = this.performance.evalConsoleErrors;
 
 
-            //console.log(JSON.stringify(report));
+            console.log(JSON.stringify(report));
             console.log('Elapsed load time: ' + this.pad(elapsed, 6) + 'ms');
 
             if(phantom.args.indexOf('csv') >= 0){
@@ -307,14 +307,15 @@ var loadreport = {
                 } else {
                     task.onLoadFinished.call(scope, page, config, status);
                 }
-                task.end_task();
 
                 page = WebPage.create();
                 doPageLoad();
+                task.end_task();
             };
         } else {
             page.onLoadFinished = function (status) {
                 task.end_task();
+                this.close();
             };
         }
         page.settings.localToRemoteUrlAccessEnabled = true;
@@ -534,7 +535,7 @@ var loadreport = {
             myfile = 'reports/' + filename + '.' + extension;
 
         }
-
+        console.log("Create new: "+createNew);
         if(!createNew && fs.exists(myfile)){
             //file exists so append line
             try{

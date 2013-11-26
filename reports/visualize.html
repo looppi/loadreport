@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>D3: Creating paragraphs dynamically from data</title>
+    <script type="text/javascript" src="http://d3js.org/d3.v3.min.js"></script>
+    <script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
+    <script src="http://code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
+</head>
+<body>
+<style type="text/css">
+    div.bar {
+        display: inline-block;
+        width: 20px;
+        height: 20px;   /* We'll override height later */
+        background-color: teal;
+        overflow: hidden;
+    }
+    div.legend p{
+        float:left;
+        margin: 0;
+    }
+</style>
+<script type="text/javascript">
+
+    var dataset = null;
+    d3.json("loadreport.json", function(data) {
+        dataset = data;
+        d3.select("body").selectAll("div")
+                .data(dataset)
+                .enter()
+                .append("div")
+                .attr("class", "legend")
+                .append("div")
+                .attr("class", "bar")
+                .style("width", function(d) {return d.elapsedLoadTime/7+"px"})
+                .attr("title", function(d) {return d.url +", Load:"+d.elapsedLoadTime +", Errors" + d.errors.length});
+    })
+
+
+</script>
+</body>
+</html>
