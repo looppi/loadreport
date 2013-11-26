@@ -34,7 +34,7 @@
                 .append("div")
                 .attr("class", "bar")
                 .style("width", function(d) {return d.elapsedLoadTime/7+"px"})
-                .attr("title", function(d) {return d.url +", Load:"+d.elapsedLoadTime +", Errors" + d.errors.length});
+                .attr("title", function(d) {return d.url +", Load:"+d.elapsedLoadTime +", Errors " + d.errors.length + ", Slowest: "+d.slowestResource});
     })
 
 
