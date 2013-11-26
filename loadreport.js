@@ -203,7 +203,7 @@ var loadreport = {
             report.errors = this.performance.evalConsoleErrors;
 
 
-            console.log(JSON.stringify(report));
+            //console.log(JSON.stringify(report));
             console.log('Elapsed load time: ' + this.pad(elapsed, 6) + 'ms');
 
             if(phantom.args.indexOf('csv') >= 0){
@@ -314,8 +314,8 @@ var loadreport = {
             };
         } else {
             page.onLoadFinished = function (status) {
-                task.end_task();
                 this.close();
+                task.end_task();
             };
         }
         page.settings.localToRemoteUrlAccessEnabled = true;

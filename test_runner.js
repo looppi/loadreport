@@ -11,11 +11,11 @@ var tester = {
     sequence_number: 0,
     test_plan: [
         "http://kalastus.hongkong.fi",
-//        "http://kalastus.hongkong.fi/fi/vieheet/jerkit/c/30504/",
-//       "http://kalastus.hongkong.fi/fi/vieheet/jerkit/svartzonker-mcmy-tail-jerkki/p/436004/",
+        "http://kalastus.hongkong.fi/fi/vieheet/jerkit/c/30504/",
+       "http://kalastus.hongkong.fi/fi/vieheet/jerkit/svartzonker-mcmy-tail-jerkki/p/436004/",
         "http://prisma.s-verkkokauppa.fi/fi/prisma",
-//        "http://prisma.s-verkkokauppa.fi/fi/prisma/haku/nokia%20lumia",
-//        "http://verkkokauppa.starkki.fi/fi/",
+        "http://prisma.s-verkkokauppa.fi/fi/prisma/haku/nokia%20lumia",
+        "http://verkkokauppa.starkki.fi/fi/",
 //        "http://www.verkkokauppa.com/",
 //        "http://www.verkkokauppa.com/fi/search?q=galaxy%20s4"
     ],
@@ -30,7 +30,7 @@ var tester = {
         var i = this.sequence_number;
         if(i < this.test_plan.length) {
             var url = this.test_plan[i];
-            console.log(url);
+            console.log("Loading Page: "+url);
             this.config.url = url;
             loadreport.config = loadreport.mergeConfig(this.config, this.config.configFile);
             var task = loadreport[this.task];
@@ -45,7 +45,10 @@ var tester = {
     },
 
     end_task: function() {
-        tester.run();
+        setTimeout(function() {
+            console.log("Loading done");
+            tester.run();
+        }, 1000);
     }
 };
 
