@@ -196,6 +196,7 @@ var loadreport = {
             report.slowestResource = slowest.url;
             report.largestResource = largest.url;
             report.totalResourcesSize = (totalSize / 1000);
+            report.resources = resources;
             report.nonReportingResources = missingList.length;
             report.timeStamp = now.getTime();
             report.date = now.getDate() + "/" + now.getMonth() + "/" + now.getFullYear();
