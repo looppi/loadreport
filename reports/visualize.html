@@ -6,6 +6,7 @@
     <script type="text/javascript" src="http://d3js.org/d3.v3.min.js"></script>
     <script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
     <script src="http://code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/lodash.js/2.4.1/lodash.min.js"></script>
 </head>
 <body>
 <style type="text/css">
@@ -20,9 +21,33 @@
         float:left;
         margin: 0;
     }
+    div.url_container {
+        clear:both;
+        float:left;
+        width: 200px;
+        overflow: hidden;
+        margin:0;
+        white-space: nowrap;
+    }
 </style>
 <script type="text/javascript">
-
+    var valid_resource = function(res, time_key) {
+        if(res.times.end !== null
+                && "request" in res.times
+                && "end" in res.times
+                && "end" in res.responses
+                && res.responses.end.status === 200) {
+            return res.times[time_key];
+        } else {
+            var status = "";
+            if("end" in res.responses) {
+                status = res.responses.end.status;
+            }
+            //console.log("nulling: " + status);
+            //console.log(res);
+            return Number.MAX_VALUE;
+        }
+    };
     var dataset = null;
     d3.json("loadreport.json", function(data) {
         dataset = data;
@@ -33,8 +58,37 @@
                 .attr("class", "legend")
                 .append("div")
                 .attr("class", "bar")
-                .style("width", function(d) {return d.elapsedLoadTime/7+"px"})
+                .style("width", function(d) {
+                    if(d.elapsedLoadTime < 20000) 
+                        return d.elapsedLoadTime/10+"px"
+                    else
+                        return "70%";
+                })
                 .attr("title", function(d) {return d.url +", Load:"+d.elapsedLoadTime +", Errors " + d.errors.length + ", Slowest: "+d.slowestResource});
+        //shit is synchronous!!1
+        var all_the_divs = $("div.bar");
+        all_the_divs.each(function(index, item) {
+            current_item = $(item);
+            start = item.__data__.timeStamp;
+            first_end = _.min(_.compact(item.__data__.resources), function(res) {
+                return valid_resource(res, "end");
+            });
+            first_start = _.min(_.compact(item.__data__.resources), function(res) {return valid_resource(res, "request")});
+            if(first_start.url !== first_end.url) {
+                console.log("first start:" + first_start.url);
+                console.log("first end: "+first_end.url);
+            } else {
+                console.log("first "+first_start.url);
+                console.log(first_start);
+            }
+            first_ready = first_end.times.end - first_start.times.request;
+            current_item.text(first_ready + "|" + item.__data__.elapsedLoadTime);
+            //console.log(item.__data__);   
+            element = $(document.createElement("div"));
+            element.attr("class", "url_container");
+            element.text(item.__data__.url);
+            current_item.before(element);
+        });
     })
 
 
